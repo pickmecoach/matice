@@ -17,6 +17,12 @@ global.Matice = {
       },
       "Key with one dot. Should be OK": "Avec un point, c'est bien.",
       "Key with dots. Should be better...": "Avec plusieurs points, c'est mieux..."
+    },
+    "ru": {
+      "greet": {
+        "me": "Привет!",
+      },
+      "days": "[1]день|[2,4]дня|[5,9]дней"
     }
   },
   "locale": "en",
@@ -26,7 +32,7 @@ global.Matice = {
 // const translation = require("../../src/js")
 
 test('Retrieves simple sentence.', () => {
-  expect(locales()).toEqual(['en', 'fr'])
+  expect(locales()).toEqual(['en', 'fr', 'ru'])
 
   let sentence = trans('greet.me')
   expect(sentence).toEqual("Hello!")
@@ -71,16 +77,37 @@ test('Pluralize the sentence well', () => {
   expect(sentence).toEqual("Hello everyone!")
 
   sentence = trans('balance', {args: {count: 0}, pluralize: true})
-  expect(sentence).toEqual(" You're broke")
+  expect(sentence).toEqual("You're broke")
 
   sentence = trans('balance', {args: {count: 2853}, pluralize: true})
-  expect(sentence).toEqual(" a middle man")
+  expect(sentence).toEqual("a middle man")
 
   sentence = trans('balance', {args: {count: 1000000}, pluralize: true})
-  expect(sentence).toEqual(" You are awesome :name; 1000000 Million Dollars")
+  expect(sentence).toEqual("You are awesome :name; 1000000 Million Dollars")
 
   sentence = transChoice('balance', 8578442, {name: 'Ekcel'})
-  expect(sentence).toEqual(" You are awesome Ekcel; 8578442 Million Dollars")
+  expect(sentence).toEqual("You are awesome Ekcel; 8578442 Million Dollars")
+
+  // Change locale
+  setLocale('ru')
+
+  sentence = transChoice('days', 0)
+  expect(sentence).toEqual("дней")
+
+  sentence = transChoice('days', 1)
+  expect(sentence).toEqual("день")
+
+  sentence = transChoice('days', 2)
+  expect(sentence).toEqual("дня")
+  
+  sentence = transChoice('days', 2)
+  expect(sentence).toEqual("дня")
+
+  sentence = transChoice('days', 11)
+  expect(sentence).toEqual("дней")
+
+  sentence = transChoice('days', 21)
+  expect(sentence).toEqual("день")
 });
 
 test('Test that the locale can be forced', () => {
